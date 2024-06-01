@@ -2,7 +2,11 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import useAuth from "../../Hooks/useAuth";
 import Swal from "sweetalert2";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { FaArrowRight, FaArrowRightArrowLeft, FaGoogle } from "react-icons/fa6";
+import { GrGoogle } from "react-icons/gr";
+import { FcGoogle } from "react-icons/fc";
+import { ImFacebook } from "react-icons/im";
 
 const Login = () => {
   const { login } = useAuth();
@@ -42,7 +46,7 @@ const Login = () => {
           <form onSubmit={handleLogin} className=" card-body">
             <div className="form-control">
               <label className="label">
-                <span className="text-white label-text">Email</span>
+                <span className="font-bold text-white label-text">Email</span>
               </label>
               <input
                 type="email"
@@ -54,7 +58,9 @@ const Login = () => {
             </div>
             <div className="form-control">
               <label className="label">
-                <span className="text-white label-text">Password</span>
+                <span className="font-bold text-white label-text">
+                  Password
+                </span>
               </label>
               <input
                 type="password"
@@ -66,16 +72,29 @@ const Login = () => {
               <label className="label">
                 <a
                   href="#"
-                  className="text-white label-text-alt link link-hover"
+                  className="font-bold text-white label-text-alt link link-hover"
                 >
                   Forgot password?
                 </a>
               </label>
             </div>
-            <div className="mt-6 form-control">
-              <button type="submit" className="btn btn-primary">
+            <div className="form-control">
+              <button type="submit" className="font-bold btn btn-primary">
                 Login
               </button>
+            </div>
+            <p className="text-center">
+              New here ?{" "}
+              <span className="text-[#0000EE] font-bold hover:underline">
+                <Link to={"/register"}>Register</Link>
+              </span>
+            </p>
+            <div className="mx-auto text-center">
+              <p className="underline">Continue With</p>
+              <div className="flex gap-2 mt-4">
+                <FcGoogle className="p-1 text-5xl rounded-full cursor-pointer bg-slate-50"></FcGoogle>
+                <ImFacebook className="p-1 text-5xl text-black rounded-full cursor-pointer bg-slate-50"></ImFacebook>
+              </div>
             </div>
           </form>
         </div>

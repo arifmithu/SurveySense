@@ -5,7 +5,7 @@ import Swal from "sweetalert2";
 
 const Navbar = () => {
   const { user, logOut } = useAuth();
-
+  console.log(user, "full user");
   const handleLogout = () => {
     logOut()
       .then(() => {
@@ -39,7 +39,7 @@ const Navbar = () => {
     </>
   );
   return (
-    <div className="navbar bg-[#007BFF] px-5 md:px-12 lg:px-24 text-white">
+    <div className="navbar bg-[#007BFF] fixed px-5 md:px-12 lg:px-24 text-white">
       <div className="navbar-start">
         <div className="dropdown">
           <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
@@ -74,11 +74,14 @@ const Navbar = () => {
         {user ? (
           <div className="flex items-center gap-4">
             <div className="avatar">
-              <div className="w-24 rounded-full">
-                <img src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg" />
+              <div className="w-10 rounded-full">
+                <img src={user.photoURL} />
               </div>
             </div>
-            <button className="w-[25%] md:w-[20%] lg:w-[20%] hover:cursor-pointer hover:border text-center hover:text-lg font-bold lg:hover:px-4 md:hover:px-4 hover:py-1 hover:rounded-lg hover:animate-pulse">
+            <button
+              onClick={handleLogout}
+              className="w-[25%] md:w-[20%] lg:w-full hover:cursor-pointer hover:border text-center hover:text-lg font-bold lg:hover:px-4 md:hover:px-4 hover:py-1 hover:rounded-lg hover:animate-pulse"
+            >
               Logout
             </button>
           </div>
@@ -91,7 +94,10 @@ const Navbar = () => {
             >
               Login
             </Link>
-            <Link className="w-[30%] md:w-[20%] lg:w-[20%] hover:w-[30%] cursor-pointer hover:border text-center hover:text-lg font-bold lg:hover:px-4 md:hover:px-4 sm:hover:px-0 hover:py-1 hover:rounded-lg hover:animate-pulse">
+            <Link
+              to={"/register"}
+              className="w-[30%] md:w-[20%] lg:w-[20%] hover:w-[30%] cursor-pointer hover:border text-center hover:text-lg font-bold lg:hover:px-4 md:hover:px-4 sm:hover:px-0 hover:py-1 hover:rounded-lg hover:animate-pulse"
+            >
               Register
             </Link>
             {/* </div>
