@@ -1,9 +1,27 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import useAuth from "../../Hooks/useAuth";
+import Swal from "sweetalert2";
 
 const Navbar = () => {
-  const { user } = useAuth();
+  const { user, logOut } = useAuth();
+
+  const handleLogout = () => {
+    logOut()
+      .then(() => {
+        console.log("sign out Successful.");
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: "Logout seccessful.",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      })
+      .catch((error) => {
+        console.log("error in sign out", error);
+      });
+  };
   const navlinks = (
     <>
       <li>
@@ -42,7 +60,7 @@ const Navbar = () => {
           </div>
           <ul
             tabIndex={0}
-            className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
+            className="menu menu-sm dropdown-content mt-3 z-[10] p-2 shadow bg-[#007BFF] rounded-box w-52"
           >
             {navlinks}
           </ul>
@@ -54,16 +72,28 @@ const Navbar = () => {
       </div>
       <div className="mr-4 navbar-end">
         {user ? (
-          "Log Out"
+          <div className="flex items-center gap-4">
+            <div className="avatar">
+              <div className="w-24 rounded-full">
+                <img src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg" />
+              </div>
+            </div>
+            <button className="w-[25%] md:w-[20%] lg:w-[20%] hover:cursor-pointer hover:border text-center hover:text-lg font-bold lg:hover:px-4 md:hover:px-4 hover:py-1 hover:rounded-lg hover:animate-pulse">
+              Logout
+            </button>
+          </div>
         ) : (
           // <div className="flex items-center gap-4">
           <>
-            <span className="w-[20%] hover:cursor-pointer hover:border text-center hover:text-lg font-bold hover:px-4 hover:py-1 hover:rounded-lg hover:animate-pulse">
+            <Link
+              to={"/login"}
+              className="w-[25%] md:w-[20%] lg:w-[20%] hover:cursor-pointer hover:border text-center hover:text-lg font-bold lg:hover:px-4 md:hover:px-4 hover:py-1 hover:rounded-lg hover:animate-pulse"
+            >
               Login
-            </span>
-            <span className="w-[20%] hover:w-[30%] hover:cursor-pointer hover:border text-center hover:text-lg font-bold hover:px-4 hover:py-1 hover:rounded-lg hover:animate-pulse">
+            </Link>
+            <Link className="w-[30%] md:w-[20%] lg:w-[20%] hover:w-[30%] cursor-pointer hover:border text-center hover:text-lg font-bold lg:hover:px-4 md:hover:px-4 sm:hover:px-0 hover:py-1 hover:rounded-lg hover:animate-pulse">
               Register
-            </span>
+            </Link>
             {/* </div>
              */}
           </>
