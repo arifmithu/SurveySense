@@ -16,7 +16,7 @@ export const AuthContext = createContext(null);
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState();
   const [loading, setLoading] = useState(false);
-  const facebookProvide = new FacebookAuthProvider();
+  const facebookProvider = new FacebookAuthProvider();
   const googleProvider = new GoogleAuthProvider();
 
   useEffect(() => {
@@ -43,7 +43,7 @@ const AuthProvider = ({ children }) => {
   };
   const facebookLogin = () => {
     setLoading(true);
-    return signInWithPopup(auth, facebookProvide);
+    return signInWithPopup(auth, facebookProvider);
   };
   const googleLogin = () => {
     setLoading(true);

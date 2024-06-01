@@ -9,7 +9,7 @@ import { FcGoogle } from "react-icons/fc";
 import { ImFacebook } from "react-icons/im";
 
 const Login = () => {
-  const { login } = useAuth();
+  const { login, facebookLogin, googleLogin } = useAuth();
   const navigate = useNavigate();
   const handleLogin = (e) => {
     e.preventDefault();
@@ -30,6 +30,36 @@ const Login = () => {
       })
       .catch((error) => {
         console.log("login Error", error);
+      });
+  };
+  const handleGoogleLogin = () => {
+    googleLogin()
+      .then((result) => {
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: "Login seccessful.",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      })
+      .catch((error) => {
+        console.log("google login error", error);
+      });
+  };
+  const handleFacebookLogin = () => {
+    facebookLogin()
+      .then((result) => {
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: "Login seccessful.",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      })
+      .catch((error) => {
+        console.log("facebook login error", error);
       });
   };
   return (
@@ -92,8 +122,14 @@ const Login = () => {
             <div className="mx-auto text-center">
               <p className="underline">Continue With</p>
               <div className="flex gap-2 mt-4">
-                <FcGoogle className="p-1 text-5xl rounded-full cursor-pointer bg-slate-50"></FcGoogle>
-                <ImFacebook className="p-1 text-5xl text-black rounded-full cursor-pointer bg-slate-50"></ImFacebook>
+                <FcGoogle
+                  onClick={handleGoogleLogin}
+                  className="p-1 text-5xl rounded-full cursor-pointer bg-slate-50"
+                ></FcGoogle>
+                <ImFacebook
+                  onClick={handleFacebookLogin}
+                  className="p-1 text-5xl text-black rounded-full cursor-pointer bg-slate-50"
+                ></ImFacebook>
               </div>
             </div>
           </form>
