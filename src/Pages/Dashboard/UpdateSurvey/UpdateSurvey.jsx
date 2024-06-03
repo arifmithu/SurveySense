@@ -3,10 +3,11 @@ import { useLoaderData } from "react-router-dom";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 import { useForm } from "react-hook-form";
 import useAuth from "../../../Hooks/useAuth";
+import moment from "moment";
+import Swal from "sweetalert2";
 
 const UpdateSurvey = () => {
   const survey = useLoaderData();
-  const [createSurvey, setCreateSurvey] = useState(false);
   const { user } = useAuth();
   const { register, handleSubmit, reset } = useForm();
   const axiosSecure = useAxiosSecure();
@@ -22,10 +23,12 @@ const UpdateSurvey = () => {
     const category = data.category;
     const deadline = moment(data.deadline).format("MM/DD/YYYY");
     const email = user.email;
-    const response = 0;
-    const feedback = [];
+    const response = survey.response;
+    const feedback = survey.feedback;
+    const status = survey.status;
+    const created = survey.created;
 
-    const newSurvey = {
+    const updatedSurvey = {
       surveyName,
       title,
       description,
@@ -35,19 +38,23 @@ const UpdateSurvey = () => {
       email,
       response,
       feedback,
+      status,
+      created,
     };
-    axiosSecure.post("/surveys", newSurvey).then((res) => {
-      if (res.data.insertedId) {
-        Swal.fire({
-          position: "top-end",
-          icon: "success",
-          title: "Your survey has been added",
-          showConfirmButton: false,
-          timer: 1500,
-        });
-        reset();
-      }
-    });
+    axiosSecure
+      .put(`/surveys/update/${survey._id}`, updatedSurvey)
+      .then((res) => {
+        console.log(res, "response of api");
+        if (res.data.modifiedCount > 0) {
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "Your survey has been updated",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        }
+      });
   };
   return (
     <div className="w-full">

@@ -19,6 +19,8 @@ import SurveysResponses from "../Pages/Dashboard/SurveysResponses/SurveysRespons
 import Response from "../Pages/Dashboard/Response/Response";
 import Details from "../Pages/Dashboard/Details/Details";
 import UpdateSurvey from "../Pages/Dashboard/UpdateSurvey/UpdateSurvey";
+import AllSurveys from "../Pages/AllSurveys/AllSurveys";
+import Vote from "../../src/components/Vote/Vote";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -37,6 +39,16 @@ export const router = createBrowserRouter([
   {
     path: "/register",
     element: <Register></Register>,
+  },
+  {
+    path: "/surveys",
+    element: <AllSurveys></AllSurveys>,
+  },
+  {
+    path: "/surveys/vote/:id",
+    element: <Vote></Vote>,
+    loader: ({ params }) =>
+      fetch(`http://localhost:5000/response/${params.id}`),
   },
   {
     path: "/dashboard",
