@@ -16,7 +16,9 @@ import Users from "../Pages/Dashboard/Users/Users";
 import Surveys from "../Pages/Dashboard/Surveys/Surveys";
 import Payments from "../Pages/Dashboard/Payments/Payments";
 import SurveysResponses from "../Pages/Dashboard/SurveysResponses/SurveysResponses";
-
+import Response from "../Pages/Dashboard/Response/Response";
+import Details from "../Pages/Dashboard/Details/Details";
+import UpdateSurvey from "../Pages/Dashboard/UpdateSurvey/UpdateSurvey";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -87,6 +89,24 @@ export const router = createBrowserRouter([
       {
         path: "/dashboard/surveys/responses",
         element: <SurveysResponses></SurveysResponses>,
+      },
+      {
+        path: "/dashboard/response/:id",
+        element: <Response></Response>,
+        loader: ({ params }) =>
+          fetch(`http://localhost:5000/response/${params.id}`),
+      },
+      {
+        path: "/dashboard/details/:id",
+        element: <Details></Details>,
+        loader: ({ params }) =>
+          fetch(`http://localhost:5000/response/${params.id}`),
+      },
+      {
+        path: "/dashboard/update/:id",
+        element: <UpdateSurvey></UpdateSurvey>,
+        loader: ({ params }) =>
+          fetch(`http://localhost:5000/response/${params.id}`),
       },
     ],
   },

@@ -1,10 +1,52 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
+import useAxiosSecure from "../../../Hooks/useAxiosSecure";
+import Swal from "sweetalert2";
+import useAuth from "../../../Hooks/useAuth";
+import moment from "moment/moment";
 
 const CreateSurvey = () => {
   const [createSurvey, setCreateSurvey] = useState(false);
-  const { register, handleSubmit } = useForm();
-  const onSubmit = (data) => console.log(data);
+  const { user } = useAuth();
+  const { register, handleSubmit, reset } = useForm();
+  const axiosSecure = useAxiosSecure();
+
+  const onSubmit = (data) => {
+    console.log(data);
+    const surveyName = data.surveyName;
+    const title = data.title;
+    const description = data.description;
+    const options = data.options;
+    const category = data.category;
+    const deadline = moment(data.deadline).format("MM/DD/YYYY");
+    const email = user.email;
+    const response = 0;
+    const feedback = [];
+
+    const newSurvey = {
+      surveyName,
+      title,
+      description,
+      options,
+      category,
+      deadline,
+      email,
+      response,
+      feedback,
+    };
+    axiosSecure.post("/surveys", newSurvey).then((res) => {
+      if (res.data.insertedId) {
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: "Your survey has been added",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        reset();
+      }
+    });
+  };
   return (
     <div className="w-full">
       {createSurvey ? (
@@ -18,9 +60,17 @@ const CreateSurvey = () => {
               className="flex flex-col space-y-2"
             >
               <div className="space-y-1">
+                <h2 className="text-lg font-bold ">Survey Name</h2>
+                <input
+                  {...register("surveyName")}
+                  className="w-full h-10 pl-2 border-2 rounded-lg"
+                  placeholder="survey name"
+                />
+              </div>
+              <div className="space-y-1">
                 <h2 className="text-lg font-bold ">Title</h2>
                 <input
-                  {...register("firstName")}
+                  {...register("title")}
                   className="w-full h-10 pl-2 border-2 rounded-lg"
                   placeholder="Title"
                 />
