@@ -33,6 +33,19 @@ const AuthProvider = ({ children }) => {
             setLoading(false);
           }
         });
+        axiosPublic.get(`/users/${currentUser.email}`).then((res) => {
+          if (!res.data.role) {
+            const userInfo = {
+              name: currentUser.displayName,
+              photo: currentUser.photoURL,
+              email: currentUser.email,
+              role: "user",
+            };
+            axiosPublic.post("/users", userInfo).then((res) => {
+              console.log("user role added to database");
+            });
+          }
+        });
       } else {
         console.log("user is logged out");
         localStorage.removeItem("access-token");

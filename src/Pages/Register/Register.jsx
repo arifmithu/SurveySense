@@ -3,10 +3,13 @@ import useAuth from "../../Hooks/useAuth";
 import Swal from "sweetalert2";
 import { updateProfile } from "firebase/auth";
 import { auth } from "../../Firebase/Firebase.config";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import useAxiosPublic from "../../Hooks/useAxiosPublic";
 
 const Register = () => {
   const { createUser } = useAuth();
+  const axiosPublic = useAxiosPublic();
+  const navigate = useNavigate();
   const handleRegister = (e) => {
     e.preventDefault();
     const form = e.target;
@@ -14,6 +17,7 @@ const Register = () => {
     const photo = form.photo.value;
     const email = form.email.value;
     const password = form.password.value;
+    const userInfo = { name, photo, email, role: "user" };
     console.log(name, photo, email, password, "register info");
     createUser(email, password)
       .then((result) => {
@@ -36,6 +40,12 @@ const Register = () => {
             console.log("profile update error", error);
           });
         navigate("/");
+        axiosPublic
+          .post("/users", userInfo)
+          .then((res) => console.log("user added to the database"))
+          .catch((error) =>
+            console.log("error in adding user to the database", error)
+          );
       })
       .catch((error) => {
         console.log("register Error", error);
