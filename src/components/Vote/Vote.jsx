@@ -47,6 +47,22 @@ const Vote = () => {
         setLoading(false);
       });
   };
+
+  const handleComment = (e) => {
+    e.preventDefault();
+    const comment = e.target.comment.value;
+    const commentInfo = { comment, email: user.email, postId: survey._id };
+    axiosSecure
+      .post("/comments", commentInfo)
+      .then((res) => {
+        if (res.data.insertedId) {
+          e.target.reset();
+        }
+      })
+      .catch((error) => {
+        console.log("error in inserting comment", error);
+      });
+  };
   return (
     <div className="h-screen px-5 text-center md:px-12 lg:px-20 ">
       <div className="pt-3">
@@ -114,6 +130,28 @@ const Vote = () => {
           </div>
         </div>
       </div>
+      {role == "pro-user" && (
+        <div>
+          <h1 className="mt-10 text-2xl font-bold mb-6">
+            Features for Pro Users
+          </h1>
+          <div>
+            <form
+              onSubmit={handleComment}
+              className="flex items-center justify-center"
+            >
+              <textarea
+                name="comment"
+                className="textarea textarea-primary textarea-lg ml-24 mr-5"
+                placeholder="Bio"
+              ></textarea>
+              <button type="submit" className="btn btn-primary my-10">
+                Comment
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
       <Link to={"/"}>
         <button className="btn btn-primary my-10">Home</button>
       </Link>
