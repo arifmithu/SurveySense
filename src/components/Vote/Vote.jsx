@@ -14,7 +14,7 @@ const Vote = () => {
   const { role } = useRole();
   const axiosSecure = useAxiosSecure();
 
-  const voted = survey.feedback.find((voter) => voter[0] == user.email);
+  const voted = survey.feedback.find((voter) => voter.email == user.email);
   const timeOver =
     moment().unix() > moment(`${survey.deadline}`, "MM/DD/YYYY").unix();
   console.log(timeOver, "time");
@@ -24,7 +24,7 @@ const Vote = () => {
     setLoading(true);
     const form = e.target;
     const ans = form.radioButton.value;
-    const newVote = [user.email, user.displayName, ans];
+    const newVote = { email: user.email, name: user.displayName, vote: ans };
     axiosSecure
       .put(`/surveys/vote/${survey._id}`, newVote)
       .then((res) => {
@@ -36,6 +36,7 @@ const Vote = () => {
             showConfirmButton: false,
             timer: 1500,
           });
+          console.log("inside voting");
           setLoading(false);
         }
       })
