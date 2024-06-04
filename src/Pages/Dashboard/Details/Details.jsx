@@ -20,9 +20,9 @@ const Details = () => {
           {survey.feedback?.map((user, index) => (
             <tr key={index}>
               <th>{index + 1}</th>
-              <td>{user.email}</td>
-              <td>{user.name}</td>
-              <td>{user.vote}</td>
+              <td>{user[0]}</td>
+              <td>{user[1]}</td>
+              <td>{user[2]}</td>
             </tr>
           ))}
         </tbody>

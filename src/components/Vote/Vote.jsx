@@ -1,24 +1,30 @@
 import React, { useState } from "react";
-import { useLoaderData } from "react-router-dom";
+import { Link, useLoaderData } from "react-router-dom";
 import SectionTitle from "../../Shared/SectionTitle/SectionTitle";
 import useAuth from "../../Hooks/useAuth";
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
 import Swal from "sweetalert2";
+import useRole from "../../Hooks/useRole";
+import moment from "moment/moment";
 
 const Vote = () => {
   const survey = useLoaderData();
   const [loading, setLoading] = useState(false);
   const { user } = useAuth();
+  const { role } = useRole();
   const axiosSecure = useAxiosSecure();
 
   const voted = survey.feedback.find((voter) => voter[0] == user.email);
+  const timeOver =
+    moment().unix() > moment(`${survey.deadline}`, "MM/DD/YYYY").unix();
+  console.log(timeOver, "time");
 
   const handleVoting = (e) => {
     e.preventDefault();
     setLoading(true);
     const form = e.target;
     const ans = form.radioButton.value;
-    const newVote = [user.email, ans];
+    const newVote = [user.email, user.displayName, ans];
     axiosSecure
       .put(`/surveys/vote/${survey._id}`, newVote)
       .then((res) => {
@@ -35,6 +41,9 @@ const Vote = () => {
       })
       .catch((error) => {
         console.log("error in voting", error);
+      })
+      .finally(() => {
+        setLoading(false);
       });
   };
   return (
@@ -58,6 +67,9 @@ const Vote = () => {
             <div>
               <p>Created : {survey.created}</p>
               <p>Deadline : {survey.deadline}</p>
+              <Link to={`/report/${survey._id}`}>
+                <button className="mt-4 btn ">Report</button>
+              </Link>
             </div>
           </div>
           <div className="card-body">
@@ -78,7 +90,7 @@ const Vote = () => {
                 <span className="ml-2">No</span>
               </div>
               <button
-                disabled={voted}
+                disabled={voted || timeOver}
                 type="submit"
                 className="mt-4 btn btn-primary"
               >
@@ -88,11 +100,22 @@ const Vote = () => {
                   "Vote Now"
                 )}
               </button>
-              {voted && <p className="text-red-500">You have already voted.</p>}
+
+              {(voted && (
+                <p className="text-red-500">You have already voted.</p>
+              )) ||
+                (timeOver && (
+                  <p className="text-red-500">
+                    The deadline of this survey is over.
+                  </p>
+                ))}
             </form>
           </div>
         </div>
       </div>
+      <Link to={"/"}>
+        <button className="btn btn-primary my-10">Home</button>
+      </Link>
     </div>
   );
 };

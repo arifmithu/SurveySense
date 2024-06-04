@@ -21,6 +21,7 @@ import Details from "../Pages/Dashboard/Details/Details";
 import UpdateSurvey from "../Pages/Dashboard/UpdateSurvey/UpdateSurvey";
 import AllSurveys from "../Pages/AllSurveys/AllSurveys";
 import Vote from "../../src/components/Vote/Vote";
+import ReportSurvey from "../Pages/ReportSurvey/ReportSurvey";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -47,6 +48,12 @@ export const router = createBrowserRouter([
   {
     path: "/surveys/vote/:id",
     element: <Vote></Vote>,
+    loader: ({ params }) =>
+      fetch(`http://localhost:5000/response/${params.id}`),
+  },
+  {
+    path: "/report/:id",
+    element: <ReportSurvey></ReportSurvey>,
     loader: ({ params }) =>
       fetch(`http://localhost:5000/response/${params.id}`),
   },

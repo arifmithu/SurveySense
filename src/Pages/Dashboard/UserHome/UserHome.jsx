@@ -1,10 +1,12 @@
 import React from "react";
 import useAuth from "../../../Hooks/useAuth";
+import useRole from "../../../Hooks/useRole";
 
 const UserHome = () => {
   const { user } = useAuth();
+  const { role } = useRole();
   const { displayName, email, photoURL } = user;
-  console.log(user);
+  console.log(user, "my profile");
   return (
     <div className="w-full mx-10 mt-10 border">
       <div className="shadow-xl card card-side bg-base-100">
@@ -13,7 +15,10 @@ const UserHome = () => {
         </figure>
         <div className="card-body">
           <h2 className="card-title">{displayName}</h2>
-          <p>{email}</p>
+          <div>
+            <p>Email: {email}</p>
+            <p>Status: {role}</p>
+          </div>
         </div>
       </div>
     </div>
