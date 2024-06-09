@@ -142,7 +142,7 @@ const Dashboard = () => {
       </div>
 
       {/* outlet part */}
-      <div className="w-[60%] m-10">
+      <div className="flex-1 m-10">
         <Outlet></Outlet>
       </div>
     </div>

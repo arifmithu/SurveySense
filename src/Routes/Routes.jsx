@@ -93,6 +93,7 @@ export const router = createBrowserRouter([
         path: "/dashboard/createSurvey",
         element: <CreateSurvey></CreateSurvey>,
       },
+      // admin routes
       {
         path: "/dashboard/users",
         element: <Users></Users>,
