@@ -6,6 +6,7 @@ import useAxiosSecure from "../../Hooks/useAxiosSecure";
 import Swal from "sweetalert2";
 import useRole from "../../Hooks/useRole";
 import moment from "moment/moment";
+import { useQuery } from "@tanstack/react-query";
 
 const Vote = () => {
   const survey = useLoaderData();
@@ -17,7 +18,6 @@ const Vote = () => {
   const voted = survey.feedback.find((voter) => voter.email == user.email);
   const timeOver =
     moment().unix() > moment(`${survey.deadline}`, "MM/DD/YYYY").unix();
-  console.log(timeOver, "time");
 
   const handleVoting = (e) => {
     e.preventDefault();
@@ -48,6 +48,18 @@ const Vote = () => {
       });
   };
 
+  const {
+    data: comments = [],
+    isLoading,
+    refetch,
+  } = useQuery({
+    queryKey: ["comments", user.email],
+    queryFn: async () => {
+      const res = await axiosSecure.get(`/comments/${survey._id}`);
+      return res.data;
+    },
+  });
+
   const handleComment = (e) => {
     e.preventDefault();
     const comment = e.target.comment.value;
@@ -57,6 +69,7 @@ const Vote = () => {
       .then((res) => {
         if (res.data.insertedId) {
           e.target.reset();
+          refetch();
         }
       })
       .catch((error) => {
@@ -89,7 +102,8 @@ const Vote = () => {
               </Link>
             </div>
           </div>
-          <div className="card-body">
+          <div className="mx-auto text-left w-fit card-body">
+            <p className="font-bold">{survey.title}</p>
             <p>Q : {survey.description}</p>
             <form onSubmit={handleVoting}>
               <div className="">
@@ -132,7 +146,7 @@ const Vote = () => {
       </div>
       {role == "pro-user" && (
         <div>
-          <h1 className="mt-10 text-2xl font-bold mb-6">
+          <h1 className="mt-10 mb-6 text-2xl font-bold">
             Features for Pro Users
           </h1>
           <div>
@@ -142,18 +156,32 @@ const Vote = () => {
             >
               <textarea
                 name="comment"
-                className="textarea textarea-primary textarea-lg ml-24 mr-5"
+                className="ml-24 mr-5 textarea textarea-primary textarea-lg"
                 placeholder="Bio"
               ></textarea>
-              <button type="submit" className="btn btn-primary my-10">
+              <button type="submit" className="my-10 btn btn-primary">
                 Comment
               </button>
             </form>
           </div>
         </div>
       )}
+      <div className="mt-10 text-left">
+        {comments.length > 0 && (
+          <h4 className="mb-5 text-lg font-bold text-slate-500">
+            Comments by pro-users.
+          </h4>
+        )}
+        {!isLoading &&
+          [...comments].reverse().map((comment, index) => (
+            <div key={index} className="mb-5">
+              <h1 className="font-bold">{comment.comment}</h1>
+              <p className="text-sm text-slate-400">by {comment.email}</p>
+            </div>
+          ))}
+      </div>
       <Link to={"/"}>
-        <button className="btn btn-primary my-10">Home</button>
+        <button className="my-10 btn btn-primary">Home</button>
       </Link>
     </div>
   );

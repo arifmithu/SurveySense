@@ -49,13 +49,13 @@ export const router = createBrowserRouter([
     path: "/surveys/vote/:id",
     element: <Vote></Vote>,
     loader: ({ params }) =>
-      fetch(`http://localhost:5000/response/${params.id}`),
+      fetch(`https://survey-sense-server.vercel.app/response/${params.id}`),
   },
   {
     path: "/report/:id",
     element: <ReportSurvey></ReportSurvey>,
     loader: ({ params }) =>
-      fetch(`http://localhost:5000/response/${params.id}`),
+      fetch(`https://survey-sense-server.vercel.app/response/${params.id}`),
   },
   {
     path: "/dashboard",
@@ -113,19 +113,19 @@ export const router = createBrowserRouter([
         path: "/dashboard/response/:id",
         element: <Response></Response>,
         loader: ({ params }) =>
-          fetch(`http://localhost:5000/response/${params.id}`),
+          fetch(`https://survey-sense-server.vercel.app/response/${params.id}`),
       },
       {
         path: "/dashboard/details/:id",
         element: <Details></Details>,
         loader: ({ params }) =>
-          fetch(`http://localhost:5000/response/${params.id}`),
+          fetch(`https://survey-sense-server.vercel.app/response/${params.id}`),
       },
       {
         path: "/dashboard/update/:id",
         element: <UpdateSurvey></UpdateSurvey>,
         loader: ({ params }) =>
-          fetch(`http://localhost:5000/response/${params.id}`),
+          fetch(`https://survey-sense-server.vercel.app/response/${params.id}`),
       },
     ],
   },

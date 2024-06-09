@@ -3,7 +3,12 @@ import useAuth from "../../Hooks/useAuth";
 import useRole from "../../Hooks/useRole";
 import { NavLink, Outlet } from "react-router-dom";
 import { FaHome } from "react-icons/fa";
-import { MdHowToVote, MdOutlinePayment, MdOutlinePublishedWithChanges } from "react-icons/md";
+import {
+  MdComment,
+  MdHowToVote,
+  MdOutlinePayment,
+  MdOutlinePublishedWithChanges,
+} from "react-icons/md";
 import { GoReport } from "react-icons/go";
 import { CgProfile } from "react-icons/cg";
 import { TfiWrite } from "react-icons/tfi";
@@ -71,7 +76,7 @@ const Dashboard = () => {
               </li>
               <li className="text-lg font-bold">
                 <NavLink to={"/dashboard/commentedSurveys"}>
-                  <MdHowToVote />
+                  <MdComment />
                   Commented Surveys
                 </NavLink>
               </li>
@@ -107,19 +112,19 @@ const Dashboard = () => {
               </li>
               <li className="text-lg font-bold">
                 <NavLink to={"/dashboard/surveys"}>
-                <RiSurveyFill />
+                  <RiSurveyFill />
                   Surveys
                 </NavLink>
               </li>
               <li className="text-lg font-bold">
                 <NavLink to={"/dashboard/surveys/responses"}>
-                <VscFeedback />
+                  <VscFeedback />
                   Surveys Responses
                 </NavLink>
               </li>
               <li className="text-lg font-bold">
                 <NavLink to={"/dashboard/payments"}>
-                <MdOutlinePayment />
+                  <MdOutlinePayment />
                   Payments
                 </NavLink>
               </li>

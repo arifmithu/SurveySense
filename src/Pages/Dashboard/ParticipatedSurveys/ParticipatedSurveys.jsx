@@ -20,11 +20,11 @@ const ParticipatedSurveys = () => {
   return isLoading ? (
     <span className="loading loading-spinner loading-lg"></span>
   ) : (
-    <div className="overflow-x-auto">
+    <div className="overflow-x-auto rounded-lg">
       <table className="table">
         {/* head */}
         <thead>
-          <tr>
+          <tr className="bg-[#007BFF] text-white font-bold text-xl">
             <th>#</th>
             <th>Survey Name</th>
             <th>Total Response</th>
