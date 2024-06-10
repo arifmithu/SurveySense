@@ -25,20 +25,20 @@ const AuthProvider = ({ children }) => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
       if (currentUser) {
-        console.log(currentUser);
-        const userInfo = { email: currentUser.email };
+        console.log("user fb", currentUser);
+        const userInfo = { email: currentUser?.email };
         axiosPublic.post("/jwt", userInfo).then((res) => {
           if (res.data.token) {
             localStorage.setItem("access-token", res.data.token);
             setLoading(false);
           }
         });
-        axiosPublic.get(`/users/${currentUser.email}`).then((res) => {
+        axiosPublic.get(`/users/${currentUser?.email}`).then((res) => {
           if (!res.data.role) {
             const userInfo = {
               name: currentUser.displayName,
               photo: currentUser.photoURL,
-              email: currentUser.email,
+              email: currentUser?.email || currentUser.providerData[0].email,
               role: "user",
             };
             axiosPublic.post("/users", userInfo).then((res) => {

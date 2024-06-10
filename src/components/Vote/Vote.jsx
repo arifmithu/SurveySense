@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, useLoaderData } from "react-router-dom";
+import { Link, useLoaderData, useNavigate } from "react-router-dom";
 import SectionTitle from "../../Shared/SectionTitle/SectionTitle";
 import useAuth from "../../Hooks/useAuth";
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
@@ -14,17 +14,21 @@ const Vote = () => {
   const { user } = useAuth();
   const { role } = useRole();
   const axiosSecure = useAxiosSecure();
+  const navigate = useNavigate();
 
-  const voted = survey.feedback.find((voter) => voter.email == user.email);
+  const voted = survey.feedback.find((voter) => voter.email == user?.email);
   const timeOver =
     moment().unix() > moment(`${survey.deadline}`, "MM/DD/YYYY").unix();
 
+  if (!user) {
+    navigate("/login");
+  }
   const handleVoting = (e) => {
     e.preventDefault();
     setLoading(true);
     const form = e.target;
     const ans = form.radioButton.value;
-    const newVote = { email: user.email, name: user.displayName, vote: ans };
+    const newVote = { email: user?.email, name: user.displayName, vote: ans };
     axiosSecure
       .put(`/surveys/vote/${survey._id}`, newVote)
       .then((res) => {
@@ -42,6 +46,7 @@ const Vote = () => {
       })
       .catch((error) => {
         console.log("error in voting", error);
+        navigate("/login");
       })
       .finally(() => {
         setLoading(false);
@@ -53,7 +58,7 @@ const Vote = () => {
     isLoading,
     refetch,
   } = useQuery({
-    queryKey: ["comments", user.email],
+    queryKey: ["comments", user?.email],
     queryFn: async () => {
       const res = await axiosSecure.get(`/comments/${survey._id}`);
       return res.data;
@@ -63,7 +68,7 @@ const Vote = () => {
   const handleComment = (e) => {
     e.preventDefault();
     const comment = e.target.comment.value;
-    const commentInfo = { comment, email: user.email, postId: survey._id };
+    const commentInfo = { comment, email: user?.email, postId: survey._id };
     axiosSecure
       .post("/comments", commentInfo)
       .then((res) => {

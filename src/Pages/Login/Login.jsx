@@ -7,6 +7,8 @@ import { FaArrowRight, FaArrowRightArrowLeft, FaGoogle } from "react-icons/fa6";
 import { GrGoogle } from "react-icons/gr";
 import { FcGoogle } from "react-icons/fc";
 import { ImFacebook } from "react-icons/im";
+import { updateProfile } from "firebase/auth";
+import { auth } from "../../Firebase/Firebase.config";
 
 const Login = () => {
   const { login, facebookLogin, googleLogin } = useAuth();
@@ -42,9 +44,17 @@ const Login = () => {
           showConfirmButton: false,
           timer: 1500,
         });
+        navigate("/");
       })
       .catch((error) => {
         console.log("google login error", error);
+        Swal.fire({
+          position: "top-end",
+          icon: "warning",
+          title: "Something went wrong. Try again.",
+          showConfirmButton: false,
+          timer: 1500,
+        });
       });
   };
   const handleFacebookLogin = () => {
@@ -57,6 +67,13 @@ const Login = () => {
           showConfirmButton: false,
           timer: 1500,
         });
+        console.log("result of facebook login", result._tokenResponse.email);
+        updateProfile(auth.currentUser, {
+          email: result._tokenResponse.email,
+        })
+          .then(() => console.log("profile updated"))
+          .catch((error) => console.log("error in updating profile"));
+        navigate("/");
       })
       .catch((error) => {
         console.log("facebook login error", error);
