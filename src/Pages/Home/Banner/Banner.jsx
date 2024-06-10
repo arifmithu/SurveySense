@@ -2,6 +2,9 @@ import React from "react";
 import "../../../index.css";
 
 const Banner = () => {
+  const handleScroll = () => {
+    window.scrollBy({ top: 530, left: 0, behavior: "smooth" });
+  };
   return (
     <div
       className="min-h-screen bg-[#007BFF] hero"
@@ -19,7 +22,10 @@ const Banner = () => {
             Gather insights, make decisions, and improve your services through
             our comprehensive surveys.
           </p>
-          <button className="btn bg-[#FFA500] hover:bg-[#FFB84D] font-bold">
+          <button
+            onClick={handleScroll}
+            className="btn bg-[#FFA500] hover:bg-[#FFB84D] font-bold"
+          >
             Explore
           </button>
         </div>
