@@ -19,8 +19,9 @@ import { VscFeedback } from "react-icons/vsc";
 const Dashboard = () => {
   const { user } = useAuth();
   const { role } = useRole();
+  console.log(role, "roleing");
   return (
-    <div className="flex">
+    <div className="flex h-full">
       <div className="w-[25%] lg:w-[20%] min-h-screen bg-[#007BFF] text-white">
         <ul className="-space-y-2 menu">
           {role == "user" ? (
@@ -43,16 +44,6 @@ const Dashboard = () => {
                   Reported Surveys
                 </NavLink>
               </li>
-              {/* {role == "pro-user" ? (
-                <li className="text-lg font-bold">
-                  <NavLink to={"/dashboard/commentedSurveys"}>
-                    <MdHowToVote />
-                    Commented Surveys
-                  </NavLink>
-                </li>
-              ) : (
-                ""
-              )} */}
             </>
           ) : role == "pro-user" ? (
             <>

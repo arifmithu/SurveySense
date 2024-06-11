@@ -65,6 +65,9 @@ const Users = () => {
               <button onClick={() => setUserType("pro-user")}>Pro User</button>
             </li>
             <li>
+              <button onClick={() => setUserType("surveyor")}>Surveyor</button>
+            </li>
+            <li>
               <button onClick={() => setUserType("admin")}>Admin</button>
             </li>
           </ul>

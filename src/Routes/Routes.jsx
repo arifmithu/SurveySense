@@ -22,6 +22,8 @@ import UpdateSurvey from "../Pages/Dashboard/UpdateSurvey/UpdateSurvey";
 import AllSurveys from "../Pages/AllSurveys/AllSurveys";
 import Vote from "../../src/components/Vote/Vote";
 import ReportSurvey from "../Pages/ReportSurvey/ReportSurvey";
+import UserRoute from "../components/isUser/IsUser";
+import Pricing from "../Pages/Pricing/Pricing";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -56,6 +58,10 @@ export const router = createBrowserRouter([
     element: <ReportSurvey></ReportSurvey>,
     loader: ({ params }) =>
       fetch(`https://survey-sense-server.vercel.app/response/${params.id}`),
+  },
+  {
+    path: "/pricing",
+    element: <Pricing></Pricing>,
   },
   {
     path: "/dashboard",

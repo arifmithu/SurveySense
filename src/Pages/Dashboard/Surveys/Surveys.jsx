@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
 import SectionTitle from "../../../Shared/SectionTitle/SectionTitle";
 
 const Surveys = () => {
   const axiosSecure = useAxiosSecure();
+  const [status, setStatus] = useState("Change Status");
   const {
     data: surveys = [],
     isLoading,
@@ -18,8 +19,12 @@ const Surveys = () => {
       return res.data;
     },
   });
+  const handleStatusChange = async (id, newStatus) => {
+    const survey = await axiosSecure.get(`/response/${id}`);
+    console.log("response ", survey);
+  };
   return (
-    <div className="w-full">
+    <div className="h-full border ">
       <SectionTitle
         heading={"All Surveys"}
         subHeading={"Posted by Surveyors"}
@@ -27,11 +32,11 @@ const Surveys = () => {
       {isLoading ? (
         <span className="loading loading-spinner loading-lg"></span>
       ) : (
-        <div className="mt-5 overflow-y-auto overflow-x-auto h-[60vh] rounded-lg">
-          <table className="table ">
+        <div className="h-auto mt-5 overflow-x-auto overflow-y-auto rounded-lg w-fit">
+          <table className="table w-full">
             {/* head */}
             <thead className="bg-[#007BFF] text-white font-bold text-xl rounded-lg">
-              <tr>
+              <tr className="w-full">
                 <th>#</th>
                 <th>Survey Name</th>
                 <th>Category</th>
@@ -39,6 +44,7 @@ const Surveys = () => {
                 <th>Surveyor Email</th>
                 <th>Total Response</th>
                 <th>Status</th>
+                <th>Change Status</th>
               </tr>
             </thead>
             <tbody>
@@ -57,6 +63,45 @@ const Surveys = () => {
                   <td>{survey.email}</td>
                   <td>{survey.response}</td>
                   <td>{survey.status}</td>
+                  <td>
+                    <div className="flex items-center justify-end">
+                      <div className="dropdown">
+                        <div
+                          tabIndex={0}
+                          role="button"
+                          className="m-1 w-28 btn"
+                        >
+                          {status.toUpperCase()}
+                        </div>
+                        <ul
+                          tabIndex={0}
+                          className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52"
+                        >
+                          {survey.status == "published" ? (
+                            <li>
+                              <button
+                                onClick={() =>
+                                  handleStatusChange(survey._id, "unpublished")
+                                }
+                              >
+                                Unpublish
+                              </button>
+                            </li>
+                          ) : (
+                            <li>
+                              <button
+                                onClick={() =>
+                                  handleStatusChange(survey._id, "published")
+                                }
+                              >
+                                Publish
+                              </button>
+                            </li>
+                          )}
+                        </ul>
+                      </div>
+                    </div>
+                  </td>
                 </tr>
               ))}
             </tbody>

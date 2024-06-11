@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, useLoaderData, useNavigate } from "react-router-dom";
+import { Link, useLoaderData, useNavigate, useParams } from "react-router-dom";
 import SectionTitle from "../../Shared/SectionTitle/SectionTitle";
 import useAuth from "../../Hooks/useAuth";
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
@@ -15,6 +15,8 @@ const Vote = () => {
   const { role } = useRole();
   const axiosSecure = useAxiosSecure();
   const navigate = useNavigate();
+  const [showResult, setShowResult] = useState(false);
+  const [votedDone, setVotedDone] = useState(false);
 
   const voted = survey.feedback.find((voter) => voter.email == user?.email);
   const timeOver =
@@ -24,6 +26,7 @@ const Vote = () => {
     navigate("/login");
   }
   const handleVoting = (e) => {
+    setShowResult(false);
     e.preventDefault();
     setLoading(true);
     const form = e.target;
@@ -40,8 +43,9 @@ const Vote = () => {
             showConfirmButton: false,
             timer: 1500,
           });
-          console.log("inside voting");
           setLoading(false);
+          setShowResult(true);
+          setVotedDone(true);
         }
       })
       .catch((error) => {
@@ -95,16 +99,13 @@ const Vote = () => {
             <div>
               <h2 className="card-title">Survey Name: {survey.surveyName}</h2>
               <p className="card-title">Category : {survey.category}</p>
-              {voted && (
+              {(voted || timeOver || showResult) && (
                 <p className="card-title">Total Vote : {survey.response}</p>
               )}
             </div>
             <div>
               <p>Created : {survey.created}</p>
               <p>Deadline : {survey.deadline}</p>
-              <Link to={`/report/${survey._id}`}>
-                <button className="mt-4 btn ">Report</button>
-              </Link>
             </div>
           </div>
           <div className="mx-auto text-left w-fit card-body">
@@ -126,9 +127,9 @@ const Vote = () => {
                 <span className="ml-2">No</span>
               </div>
               <button
-                disabled={voted || timeOver}
+                disabled={voted || timeOver || votedDone}
                 type="submit"
-                className="mt-4 btn btn-primary"
+                className="mt-4 mr-3 btn btn-primary"
               >
                 {loading ? (
                   <span className="loading loading-spinner loading-md"></span>
@@ -136,6 +137,9 @@ const Vote = () => {
                   "Vote Now"
                 )}
               </button>
+              <Link to={`/report/${survey._id}`}>
+                <button className="mt-4 btn ">Report</button>
+              </Link>
 
               {(voted && (
                 <p className="text-red-500">You have already voted.</p>

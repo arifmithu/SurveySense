@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import useAuth from "../../Hooks/useAuth";
 import Swal from "sweetalert2";
 import { updateProfile } from "firebase/auth";
@@ -9,6 +9,7 @@ import useAxiosPublic from "../../Hooks/useAxiosPublic";
 const Register = () => {
   const { createUser } = useAuth();
   const axiosPublic = useAxiosPublic();
+  const [registerError, setRegisterError] = useState("");
   const navigate = useNavigate();
   const handleRegister = (e) => {
     e.preventDefault();
@@ -19,6 +20,26 @@ const Register = () => {
     const password = form.password.value;
     const userInfo = { name, photo, email, role: "user" };
     console.log(name, photo, email, password, "register info");
+    if (password.length < 6) {
+      setRegisterError("Password should be at least 6 characters or longer");
+      return;
+    } else if (!/[A-Z]/.test(password)) {
+      setRegisterError("Password should have atleast one upper case letter.");
+      return;
+    } else if (!/[a-z]/.test(password)) {
+      setRegisterError("Password should have atleast one lower case letter.");
+      return;
+    } else if (!/[0-9]/.test(password)) {
+      setRegisterError("Password should have atleast one number.");
+      return;
+    } else if (!/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
+      setRegisterError("Password should have at least one special character.");
+      return;
+    } else {
+      setRegisterError(""); // Clear any previous errors
+      // Proceed with login
+      console.log("Password is valid");
+    }
     createUser(email, password)
       .then((result) => {
         console.log(result.user, "created user");
@@ -116,6 +137,7 @@ const Register = () => {
                 className="text-black input input-bordered"
                 required
               />
+              {registerError && <p className="text-white">{registerError}</p>}
               <label className="label">
                 <a
                   href="#"

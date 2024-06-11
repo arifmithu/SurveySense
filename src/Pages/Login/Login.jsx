@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import useAuth from "../../Hooks/useAuth";
 import Swal from "sweetalert2";
@@ -7,11 +7,12 @@ import { FaArrowRight, FaArrowRightArrowLeft, FaGoogle } from "react-icons/fa6";
 import { GrGoogle } from "react-icons/gr";
 import { FcGoogle } from "react-icons/fc";
 import { ImFacebook } from "react-icons/im";
-import { updateProfile } from "firebase/auth";
+import { updateEmail, updateProfile } from "firebase/auth";
 import { auth } from "../../Firebase/Firebase.config";
 
 const Login = () => {
   const { login, facebookLogin, googleLogin } = useAuth();
+  const [loginError, setLoginError] = useState("");
   const navigate = useNavigate();
   const handleLogin = (e) => {
     e.preventDefault();
@@ -19,6 +20,26 @@ const Login = () => {
     const email = form.email.value;
     const password = form.password.value;
     console.log(email, password, "login");
+    if (password.length < 6) {
+      setLoginError("Password should be at least 6 characters or longer");
+      return;
+    } else if (!/[A-Z]/.test(password)) {
+      setLoginError("Password should have atleast one upper case letter.");
+      return;
+    } else if (!/[a-z]/.test(password)) {
+      setLoginError("Password should have atleast one lower case letter.");
+      return;
+    } else if (!/[0-9]/.test(password)) {
+      setLoginError("Password should have atleast one number.");
+      return;
+    } else if (!/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
+      setLoginError("Password should have at least one special character.");
+      return;
+    } else {
+      setLoginError(""); // Clear any previous errors
+      // Proceed with login
+      console.log("Password is valid");
+    }
     login(email, password)
       .then(() => {
         Swal.fire({
@@ -60,18 +81,17 @@ const Login = () => {
   const handleFacebookLogin = () => {
     facebookLogin()
       .then((result) => {
-        Swal.fire({
-          position: "top-end",
-          icon: "success",
-          title: "Login seccessful.",
-          showConfirmButton: false,
-          timer: 1500,
-        });
-        console.log("result of facebook login", result._tokenResponse.email);
-        updateProfile(auth.currentUser, {
-          email: result._tokenResponse.email,
-        })
-          .then(() => console.log("profile updated"))
+        console.log("before update email calling");
+        updateEmail(auth.currentUser, result.user.providerData[0]?.email)
+          .then(() =>
+            Swal.fire({
+              position: "top-end",
+              icon: "success",
+              title: "Login seccessful.",
+              showConfirmButton: false,
+              timer: 1500,
+            })
+          )
           .catch((error) => console.log("error in updating profile"));
         navigate("/");
       })
@@ -116,6 +136,7 @@ const Login = () => {
                 className="text-black input input-bordered"
                 required
               />
+              {loginError && <p className="text-white">{loginError}</p>}
               <label className="label">
                 <a
                   href="#"
