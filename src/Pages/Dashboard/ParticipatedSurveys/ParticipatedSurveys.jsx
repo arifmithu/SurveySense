@@ -10,6 +10,7 @@ const ParticipatedSurveys = () => {
     data: votedSurveys = [],
     refetch,
     isLoading,
+    isError,
   } = useQuery({
     queryKey: ["voted-surveys", user.email],
     queryFn: async () => {
@@ -19,6 +20,14 @@ const ParticipatedSurveys = () => {
   });
   return isLoading ? (
     <span className="loading loading-spinner loading-lg"></span>
+  ) : isError ? (
+    <div className="flex items-center justify-center text-3xl font-bold">
+      Something went wrong.
+    </div>
+  ) : votedSurveys.length == 0 ? (
+    <div className="flex items-center justify-center w-full h-20 mt-10 border rounded-lg">
+      No vote found. Vote in surveys to see the list.
+    </div>
   ) : (
     <div className="overflow-x-auto rounded-lg">
       <table className="table">

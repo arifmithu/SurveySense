@@ -40,15 +40,6 @@ const Surveys = () => {
       .put(`/surveys/update/${survey._id}`, updateStatus)
       .then((result) => {
         if (result.data.modifiedCount > 0) {
-          Swal.fire({
-            position: "top-end",
-            icon: "success",
-            title: `This survey is ${
-              survey.status == "published" ? "unpublished" : "published"
-            }`,
-            showConfirmButton: false,
-            timer: 1500,
-          });
           refetch();
         }
       })
@@ -62,8 +53,24 @@ const Surveys = () => {
         })
       );
   };
+  const handleSendFeedback = (event, surveyName, email) => {
+    event.preventDefault();
+    const feedback = event.target.feedback.value;
+    const newFeedback = { surveyName, email, feedback };
+    axiosSecure.post("/feedbacks", newFeedback).then((res) => {
+      if (res.data.insertedId) {
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: `Feedback sent successfully.`,
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      }
+    });
+  };
   return (
-    <div className="h-full ">
+    <>
       <SectionTitle
         heading={"All Surveys"}
         subHeading={"Posted by Surveyors"}
@@ -71,8 +78,8 @@ const Surveys = () => {
       {isLoading ? (
         <span className="loading loading-spinner loading-lg"></span>
       ) : (
-        <div className="h-auto mt-5 overflow-x-auto overflow-y-auto rounded-lg w-fit">
-          <table className="table w-full">
+        <div className="h-[60vh] mt-5 border border-red-500 flex overflow-x-auto overflow-y-auto rounded-lg w-full">
+          <table className="table w-full overflow-x-auto">
             {/* head */}
             <thead className="bg-[#007BFF] text-white font-bold text-xl rounded-lg">
               <tr className="w-full">
@@ -84,6 +91,7 @@ const Surveys = () => {
                 <th>Total Response</th>
                 <th>Status</th>
                 <th>Change Status</th>
+                <th>Feedback</th>
               </tr>
             </thead>
             <tbody>
@@ -141,13 +149,54 @@ const Surveys = () => {
                       </div>
                     </div>
                   </td>
+                  <td>
+                    <button
+                      className="btn w-fit text-nowrap"
+                      onClick={() =>
+                        document.getElementById("my_modal_1").showModal()
+                      }
+                    >
+                      Send Feedback
+                    </button>
+                    <dialog id="my_modal_1" className="modal">
+                      <div className="modal-box">
+                        <h3 className="font-bold text-lg">Feedback!</h3>
+                        <form
+                          onSubmit={(event) =>
+                            handleSendFeedback(
+                              event,
+                              survey.surveyName,
+                              survey.email
+                            )
+                          }
+                          method="dialog"
+                          className="flex flex-col mt-4"
+                        >
+                          <textarea
+                            className="textarea textarea-bordered"
+                            name="feedback"
+                            placeholder="enter feedback..."
+                          ></textarea>
+                          <button type="submit" className="btn mt-4">
+                            Send
+                          </button>
+                        </form>
+                        <div className="modal-action">
+                          <form method="dialog">
+                            {/* if there is a button in form, it will close the modal */}
+                            <button className="btn">Cancel</button>
+                          </form>
+                        </div>
+                      </div>
+                    </dialog>
+                  </td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
       )}
-    </div>
+    </>
   );
 };
 

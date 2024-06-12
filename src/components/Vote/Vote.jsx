@@ -49,7 +49,6 @@ const Vote = () => {
         }
       })
       .catch((error) => {
-        console.log("error in voting", error);
         navigate("/login");
       })
       .finally(() => {

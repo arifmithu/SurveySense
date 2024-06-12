@@ -50,7 +50,6 @@ const AuthProvider = ({ children }) => {
             }
           });
       } else {
-        console.log("user is logged out");
         localStorage.removeItem("access-token");
         setLoading(false);
       }

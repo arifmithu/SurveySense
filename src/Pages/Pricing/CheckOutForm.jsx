@@ -24,12 +24,10 @@ const CheckOutForm = () => {
       axiosSecure
         .post("/create-payment-intent", { price: totalCost })
         .then((res) => {
-          console.log(res.data.clientSecret);
           setClientSecret(res.data.clientSecret);
         });
     }
   }, [axiosSecure, totalCost]);
-  console.log(stripe, clientSecret, "stripessss");
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -65,7 +63,6 @@ const CheckOutForm = () => {
     if (confirmError) {
       console.log("confirm error");
     } else {
-      console.log("payment intent", paymentIntent);
       if (paymentIntent.status === "succeeded") {
         setTransactionId(paymentIntent.id);
 
@@ -80,7 +77,6 @@ const CheckOutForm = () => {
         if (res.data?.paymentResult?.insertedId) {
           //   change status
           axiosSecure.get(`/users/${user.email}`).then((res) => {
-            console.log(res.data, "paid user");
             if (role == "user") {
               const newRole = "pro-user";
               axiosSecure

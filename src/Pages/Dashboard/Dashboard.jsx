@@ -3,6 +3,7 @@ import useAuth from "../../Hooks/useAuth";
 import useRole from "../../Hooks/useRole";
 import { NavLink, Outlet } from "react-router-dom";
 import { FaHome } from "react-icons/fa";
+
 import {
   MdComment,
   MdHowToVote,
@@ -92,6 +93,12 @@ const Dashboard = () => {
                   Create Survey
                 </NavLink>
               </li>
+              <li className="text-lg font-bold">
+                <NavLink to={"/dashboard/feedback"}>
+                  <VscFeedback />
+                  Feedback
+                </NavLink>
+              </li>
             </>
           ) : (
             <>
@@ -133,7 +140,7 @@ const Dashboard = () => {
       </div>
 
       {/* outlet part */}
-      <div className="flex-1 m-10">
+      <div className="flex-1 m-10 overflow-x-auto">
         <Outlet></Outlet>
       </div>
     </div>

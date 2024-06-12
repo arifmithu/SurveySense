@@ -10,6 +10,7 @@ const ReportedSurveys = () => {
     data = {},
     refetch,
     isLoading,
+    isError,
   } = useQuery({
     queryKey: ["reported-serveys", user.email],
     queryFn: async () => {
@@ -25,6 +26,14 @@ const ReportedSurveys = () => {
   console.log(reportedSurveys, reports, "all");
   return isLoading ? (
     <span className="loading loading-spinner loading-lg"></span>
+  ) : isError ? (
+    <div className="flex items-center justify-center text-3xl font-bold">
+      Something went wrong.
+    </div>
+  ) : !isLoading && reportedSurveys.length == 0 ? (
+    <div className="flex items-center justify-center w-full h-20 mt-10 border rounded-lg">
+      No reports found. Report first in surveys to see the list.
+    </div>
   ) : (
     <div className="overflow-x-auto rounded-lg border">
       <table className="table table-zebra">

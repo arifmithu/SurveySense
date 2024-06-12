@@ -8,7 +8,7 @@ const CommentedSurveys = () => {
   const axiosSecure = useAxiosSecure();
 
   const {
-    data: surveys = {},
+    data: surveys = [],
     isLoading,
     refetch,
     isError,
@@ -21,12 +21,15 @@ const CommentedSurveys = () => {
     },
   });
 
-  console.log(surveys, "object surveys");
   return isLoading ? (
     <span className="loading loading-spinner loading-lg"></span>
   ) : isError ? (
     <div className="flex items-center justify-center text-3xl font-bold">
       Something went wrong.
+    </div>
+  ) : surveys.commentedSurveys.length == 0 ? (
+    <div className="flex items-center justify-center w-full h-20 mt-10 border rounded-lg">
+      No comments found. Comment in surveys to see the list.
     </div>
   ) : (
     <div className="w-full overflow-hidden border-2 rounded-lg">

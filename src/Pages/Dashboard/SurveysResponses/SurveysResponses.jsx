@@ -14,7 +14,6 @@ const SurveysResponses = () => {
     queryKey: ["surveys"],
     queryFn: async () => {
       const res = await axiosSecure.get(`/surveys`);
-      console.log(res, "res from tanstack");
       return res.data;
     },
   });

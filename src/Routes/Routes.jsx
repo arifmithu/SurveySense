@@ -24,6 +24,7 @@ import Vote from "../../src/components/Vote/Vote";
 import ReportSurvey from "../Pages/ReportSurvey/ReportSurvey";
 import UserRoute from "../components/isUser/IsUser";
 import Pricing from "../Pages/Pricing/Pricing";
+import Feedback from "../Pages/Dashboard/Feedback/Feedback";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -98,6 +99,10 @@ export const router = createBrowserRouter([
       {
         path: "/dashboard/createSurvey",
         element: <CreateSurvey></CreateSurvey>,
+      },
+      {
+        path: "/dashboard/feedback",
+        element: <Feedback></Feedback>,
       },
       // admin routes
       {

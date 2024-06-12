@@ -19,7 +19,6 @@ const Login = () => {
     const form = e.target;
     const email = form.email.value;
     const password = form.password.value;
-    console.log(email, password, "login");
     if (password.length < 6) {
       setLoginError("Password should be at least 6 characters or longer");
       return;
@@ -36,9 +35,7 @@ const Login = () => {
       setLoginError("Password should have at least one special character.");
       return;
     } else {
-      setLoginError(""); // Clear any previous errors
-      // Proceed with login
-      console.log("Password is valid");
+      setLoginError("");
     }
     login(email, password)
       .then(() => {
@@ -68,7 +65,6 @@ const Login = () => {
         navigate("/");
       })
       .catch((error) => {
-        console.log("google login error", error);
         Swal.fire({
           position: "top-end",
           icon: "warning",
