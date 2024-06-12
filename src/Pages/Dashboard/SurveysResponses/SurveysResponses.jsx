@@ -31,7 +31,7 @@ const SurveysResponses = () => {
                 <th>#</th>
                 <th>Survey Name</th>
                 <th>Total Response</th>
-                <th>View Comments</th>
+                <th>View Details</th>
               </tr>
             </thead>
             <tbody>
@@ -46,7 +46,7 @@ const SurveysResponses = () => {
                   <td>{survey.response}</td>
                   <td>
                     <Link to={`/surveys/vote/${survey._id}`}>
-                      <button className="btn">Comments</button>
+                      <button className="btn">Details</button>
                     </Link>
                   </td>
                 </tr>

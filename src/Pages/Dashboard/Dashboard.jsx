@@ -21,7 +21,7 @@ const Dashboard = () => {
   const { role } = useRole();
   console.log(role, "roleing");
   return (
-    <div className="flex h-full">
+    <div className="flex h-full overflow-x-hidden">
       <div className="w-[25%] lg:w-[20%] min-h-screen bg-[#007BFF] text-white">
         <ul className="-space-y-2 menu">
           {role == "user" ? (

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
 import SectionTitle from "../../../Shared/SectionTitle/SectionTitle";
+import Swal from "sweetalert2";
 
 const Surveys = () => {
   const axiosSecure = useAxiosSecure();
@@ -20,11 +21,49 @@ const Surveys = () => {
     },
   });
   const handleStatusChange = async (id, newStatus) => {
-    const survey = await axiosSecure.get(`/response/${id}`);
-    console.log("response ", survey);
+    const response = await axiosSecure.get(`/response/${id}`);
+    const survey = response.data;
+    const updateStatus = {
+      surveyName: survey.surveyName,
+      title: survey.title,
+      description: survey.description,
+      options: survey.options,
+      category: survey.category,
+      deadline: survey.deadline,
+      email: survey.email,
+      response: survey.response,
+      feedback: survey.feedback,
+      status: survey.status == "published" ? "unpublished" : "published",
+      created: survey.created,
+    };
+    axiosSecure
+      .put(`/surveys/update/${survey._id}`, updateStatus)
+      .then((result) => {
+        if (result.data.modifiedCount > 0) {
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: `This survey is ${
+              survey.status == "published" ? "unpublished" : "published"
+            }`,
+            showConfirmButton: false,
+            timer: 1500,
+          });
+          refetch();
+        }
+      })
+      .catch((error) =>
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: `Error in updating survey status`,
+          showConfirmButton: false,
+          timer: 1500,
+        })
+      );
   };
   return (
-    <div className="h-full border ">
+    <div className="h-full ">
       <SectionTitle
         heading={"All Surveys"}
         subHeading={"Posted by Surveyors"}
