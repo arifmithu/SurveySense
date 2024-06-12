@@ -126,12 +126,14 @@ const CreateSurvey = () => {
           </div>
         </>
       ) : (
-        <button
-          class="btn btn-secondary text-white font-bold"
-          onClick={() => setCreateSurvey(true)}
-        >
-          Create New Survey
-        </button>
+        <div className="w-full h-[50vh] flex items-center justify-center">
+          <button
+            class="btn btn-secondary text-white font-bold"
+            onClick={() => setCreateSurvey(true)}
+          >
+            Create New Survey
+          </button>
+        </div>
       )}
     </div>
   );

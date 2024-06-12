@@ -12,6 +12,7 @@ const PostedSurveys = () => {
     refetch,
     isLoading,
     isPending,
+    isError,
   } = useQuery({
     queryKey: ["surveys", user.email],
     queryFn: async () => {
@@ -25,6 +26,14 @@ const PostedSurveys = () => {
     <>
       {isLoading ? (
         <span className="loading loading-spinner loading-lg"></span>
+      ) : isError ? (
+        <div className="flex items-center justify-center w-full h-20 mt-10 border rounded-lg">
+          Something went wrong.
+        </div>
+      ) : surveys.length == 0 ? (
+        <div className="flex items-center justify-center w-full h-20 mt-10 border rounded-lg">
+          No survey is posted yet.
+        </div>
       ) : (
         <div className="overflow-x-auto rounded-lg">
           <table className="table ">

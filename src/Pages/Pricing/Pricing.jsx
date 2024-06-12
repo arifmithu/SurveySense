@@ -64,7 +64,8 @@ const Pricing = () => {
               onClick={() => setShowCardOptions(!showCardOpitons)}
               className="btn"
             >
-              Buy Pro
+              Buy Pro for{" "}
+              <span className="text-red-400 font-bold text-lg">5$</span>
             </button>
           </div>
         </div>

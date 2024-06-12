@@ -126,10 +126,21 @@ const CheckOutForm = () => {
         <button
           className="mt-4 btn btn-sm btn-primary"
           type="submit"
-          disabled={!stripe || !clientSecret}
+          disabled={
+            !stripe ||
+            !clientSecret ||
+            role == "surveyor" ||
+            role == "pro-user" ||
+            role == "admin"
+          }
         >
           Pay
         </button>
+        {(role == "surveyor" || role == "pro-user" || role == "admin") && (
+          <p className="text-red-600 mt-2">
+            You are already {role}.Only user can pay.
+          </p>
+        )}
         <p className="text-red-600">{error}</p>
         {transactionId && (
           <p className="text-green-600">
