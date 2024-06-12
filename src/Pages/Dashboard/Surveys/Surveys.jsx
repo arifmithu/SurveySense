@@ -40,6 +40,13 @@ const Surveys = () => {
       .put(`/surveys/update/${survey._id}`, updateStatus)
       .then((result) => {
         if (result.data.modifiedCount > 0) {
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: `Status changed successfully.`,
+            showConfirmButton: false,
+            timer: 1500,
+          });
           refetch();
         }
       })
